@@ -563,7 +563,7 @@ button:not(.cb):not(.shield):active,.btn:active,.lc:active,.mini:active,.bn butt
  <ul id="pr" role="listbox" aria-label="ফলাফল"></ul>
  <div class="pf"><span id="pc" aria-live="polite"></span><span>উপর-নিচ তীর কী দিয়ে বেছে নাও · Enter খোলো</span></div>
 </dialog>
-<dialog id="rd" aria-label="রিসেট নিশ্চিতকরণ"><div style="padding:22px"><h2 style="font-size:1.15rem">সব স্টাডি ডেটা মুছে ফেলবে?</h2><p class="mu" style="margin:8px 0 18px">এই ব্রাউজারের Progress, Bookmark, Notes ও History মুছে যাবে। আগে JSON ব্যাকআপ নিয়ে রাখতে পারো।</p><div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap"><button class="btn" id="rno">বাতিল</button><button class="btn pri" id="rok">হ্যাঁ, রিসেট করো</button></div></div></dialog>
+<dialog id="rd" aria-label="রিসেট নিশ্চিতকরণ"><div style="padding:22px"><h2 style="font-size:1.15rem">সব স্টাডি ডেটা ও ক্যাশ মুছে ফেলবে?</h2><p class="mu" style="margin:8px 0 18px">এই ব্রাউজারের Progress, Bookmark, Notes, History ও অ্যাপের সব ক্যাশ মুছে যাবে। এরপর অ্যাপ নতুন করে লোড হয়ে সর্বশেষ আপডেট নেবে। আগে JSON ব্যাকআপ নিয়ে রাখতে পারো।</p><div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap"><button class="btn" id="rno">বাতিল</button><button class="btn pri" id="rok">হ্যাঁ, রিসেট করো</button></div></div></dialog>
 <div class="toast" id="toast" role="status"></div>
 <div class="mp" id="mp" role="region" aria-label="মিনি প্লেয়ার" hidden><div class="mps" id="mps"></div><div class="mp-bar"><span class="mp-t" id="mpt"></span><button class="mp-btn" id="mpe" type="button" aria-label="বড় করো"><svg class="i" aria-hidden="true"><use href="#i-full"/></svg></button><button class="mp-btn" id="mpp" type="button" aria-label="চালাও"><svg class="i" aria-hidden="true"><use href="#i-play"/></svg></button><button class="mp-btn" id="mpx" type="button" aria-label="বন্ধ করো"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button></div></div>
 <script>
@@ -577,6 +577,7 @@ const rm=()=>matchMedia('(prefers-reduced-motion:reduce)').matches;
 const obj=v=>v&&typeof v==='object'&&!Array.isArray(v)?v:{};
 const dayKey=o=>{const d=new Date();d.setDate(d.getDate()-o);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
 function load(){try{return obj(JSON.parse(localStorage.getItem('troyeeStudySpace')||'{}'))}catch{return{}}}
+if(/^\?r=\d+$/.test(location.search)){try{history.replaceState(null,'',location.pathname+location.hash)}catch{}}
 let state=load(),cur=null,view='dashboard',F={q:'',s:'all',o:'asc',todo:false,fav:false},tt,sel=0,items=[],nt,drawer=false;
 function save(){try{localStorage.setItem('troyeeStudySpace',JSON.stringify(state))}catch{if(!save.w){save.w=1;toast('ব্রাউজারে সংরক্ষণ করা যাচ্ছে না; পরিবর্তন শুধু এই সেশনে থাকবে')}}}
 const ALL=Object.entries(COURSES).flatMap(([s,a])=>a.map((x,i)=>({...x,subject:s,index:i,id:s+'-'+i})));
@@ -673,7 +674,7 @@ ${row('db','ব্যাকআপ নাও বা ফিরিয়ে আন�
 <div class="sxkg">${kb('<kbd>Ctrl K</kbd> বা <kbd>/</kbd>','সার্চ খোলো')}${kb('<kbd>←</kbd> <kbd>→</kbd>','আগের / পরের ক্লাস')}${kb('<kbd>Space</kbd> বা <kbd>K</kbd>','প্লে / পজ')}${kb('<kbd>T</kbd>','বর্তমান সময়ে নোটে টাইমস্ট্যাম্প')}${kb('ডাবল ক্লিক','১০ সেকেন্ড সামনে')}${kb('<kbd>J</kbd> <kbd>L</kbd>','১০ সেকেন্ড পিছনে / সামনে')}${kb('<kbd>F</kbd>','ফুলস্ক্রিন')}${kb('<kbd>M</kbd>','মিউট')}${kb('<kbd>Esc</kbd>','বন্ধ বা ফিরে যাও')}</div>
 </section>
 <section class="sxg sxdn rv"><h2>ঝুঁকিপূর্ণ এলাকা</h2>
-${row('warn','সব ডেটা রিসেট','এই ব্রাউজারের সব স্টাডি ডেটা মুছে যাবে। আগে JSON ব্যাকআপ নিয়ে রাখো',`<button class="btn sxrd" data-act="reset">${ico('trash')}রিসেট করো</button>`)}
+${row('warn','সব ডেটা রিসেট','এই ব্রাউজারের সব স্টাডি ডেটা ও অ্যাপের ক্যাশ মুছে যাবে; অ্যাপ নতুন করে লোড হয়ে সর্বশেষ আপডেট নেবে। আগে JSON ব্যাকআপ নিয়ে রাখো',`<button class="btn sxrd" data-act="reset">${ico('trash')}রিসেট করো</button>`)}
 </section></div>`}
 function render(keep){const ae=document.activeElement,fk=ae&&ae.dataset&&ae.dataset.act?[ae.dataset.act,ae.dataset.id]:null,y=scrollY,V=$('#view');stop3d();let adopt=null;
 if(yt.docked){if(view==='player'&&cur===yt.id){if(CAN_MOVE)adopt=$('#vbox');else miniResume()}else if(view==='player')miniKill()}else if(view!=='player'&&yt.p&&yt.started&&ytAlive())dockMini();else killYT();
@@ -989,7 +990,12 @@ $('#sn').addEventListener('click',e=>{const b=e.target.closest('[data-nav]');if(
 $('#rfbtn').onclick=async e=>{const b=e.currentTarget;if(b.classList.contains('spin'))return;b.classList.add('spin');b.disabled=true;try{if('serviceWorker'in navigator){const r=await navigator.serviceWorker.getRegistration();if(r)await Promise.race([r.update(),new Promise(z=>setTimeout(z,1500))])}}catch{}location.reload()};
 $('#sbtn').onclick=openPal;$('#tbtn').onclick=toggleTheme;$('#up').onclick=()=>scrollTo({top:0});
 $('#rno').onclick=()=>$('#rd').close();
-$('#rok').onclick=()=>{try{localStorage.removeItem('troyeeStudySpace')}catch{}state={};F={q:'',s:'all',o:'asc',todo:false,fav:false};applyPrefs();$('#rd').close();go('dashboard');toast('স্টাডি ডেটা রিসেট হয়েছে')};
+$('#rok').onclick=async()=>{$('#rd').close();try{yt.started=false}catch{}state={};toast('সব ডেটা ও ক্যাশ মুছে ফেলা হচ্ছে…',8000);
+try{localStorage.clear()}catch{}try{sessionStorage.clear()}catch{}
+try{if('caches'in window){const k=await caches.keys();await Promise.all(k.map(n=>caches.delete(n)))}}catch{}
+try{if('serviceWorker'in navigator){const r=await navigator.serviceWorker.getRegistrations();await Promise.all(r.map(x=>x.unregister()))}}catch{}
+try{if(indexedDB&&indexedDB.databases){const d=await indexedDB.databases();d.forEach(x=>x.name&&indexedDB.deleteDatabase(x.name))}}catch{}
+location.replace(location.pathname+'?r='+Date.now())};
 document.addEventListener('input',e=>{const t=e.target;if(t.id==='nq'){const q=t.value.trim().toLowerCase();let n=0;$$('.nt').forEach(c=>{const m=!q||c.textContent.toLowerCase().includes(q);c.hidden=!m;if(m)n++});$('#nem').hidden=n>0;return}if(t.id==='vs'||t.id==='vv')ytInput(t);else if(t.id==='cq'){F.q=t.value;drawList()}else if(t.id==='notes'){stamps();const id=cur,v=t.value;$('#nc').textContent=bn(v.length)+' অক্ষর';$('#ns').textContent='সংরক্ষণ হচ্ছে…';clearTimeout(nt);nt=setTimeout(()=>{const n=obj(state.notes);v?n[id]=v:delete n[id];state.notes=n;save();const s=$('#ns');if(s)s.textContent='সংরক্ষিত'},400)}});
 document.addEventListener('change',e=>{const t=e.target;if(t.id==='exd'){state.exam={...obj(state.exam),d:t.value};save();render(true)}else if(t.id==='exn'){state.exam={...obj(state.exam),n:t.value.trim().slice(0,40)};save();render(true)}else if(t.id==='pmcfg'){state.pomoCfg=t.value;save();if(!PM.run)PM.left=pmLen(PM.mode);pmPaint()}else if(t.id==='fs'){F.s=t.value;drawList()}else if(t.id==='fo'){F.o=t.value;drawList()}else if(t.id==='ft'){F.todo=t.checked;drawList()}else if(t.id==='ff'){F.fav=t.checked;drawList()}
 else if(t.id==='sth'){state.theme=t.value;save();applyPrefs()}else if(t.id==='sfs'){state.fontSize=t.value;save();applyPrefs()}else if(t.id==='sdt'){state.dailyTarget=t.value;save();toast('দৈনিক লক্ষ্য আপডেট হয়েছে')}

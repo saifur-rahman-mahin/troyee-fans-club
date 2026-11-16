@@ -980,7 +980,7 @@ else if(a==='pmtog')pmToggle();else if(a==='pmgo')pmGo();else if(a==='pmrst')pmR
 else if(a==='exclr'){delete state.exam;save();render(true)}
 else if(a==='nseek'){const id=b.closest('.nt').querySelector('a').getAttribute('href').split('/')[1],m=obj(state.pos);m[id]=+b.dataset.t;state.pos=m;save();go('player/'+id)}
 else if(a==='nprint'){window.print()}
-else if(a==='pwa')pwaInstall();else if(a==='insx'){hideInstall(14);toast('ঠিক আছে, ১৪ দিন আর দেখাবে না। সেটিংস থেকে যেকোনো সময় ইনস্টল করা যাবে')}
+else if(a==='pwa')pwaInstall();else if(a==='insx'){const b=$('#ibox');if(b)b.innerHTML='';toast('ঠিক আছে। রিফ্রেশ দিলে আবার দেখাবে; সেটিংস থেকেও ইনস্টল করা যাবে')}
 else if(a==='ncopy'){try{navigator.clipboard.writeText(allNotesText()).then(()=>toast('সব নোট কপি হয়েছে'),()=>toast('কপি করা যায়নি'))}catch{toast('কপি করা যায়নি')}}
 else if(a==='ndl'){const u=URL.createObjectURL(new Blob([allNotesText()],{type:'text/plain;charset=utf-8'})),l=document.createElement('a');l.href=u;l.download='troyee-notes.txt';document.body.append(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),1000)}
 else if(a==='revdone'){const r=obj(state.rev);r[b.dataset.id]=Math.min(3,(+r[b.dataset.id]||0)+1);state.rev=r;save();refresh();toast('রিভিশন সংরক্ষিত হয়েছে')}else if(a==='stamp')addStamp();else if(a==='seek')seekVid(+b.dataset.t);else if(a==='imp'){window.impMode=b.dataset.m==='merge'?'merge':'replace';$('#imf').click()}else if(a==='shj'){const fl=new File([JSON.stringify(state,null,2)],'Troyee-Academy-Fans-Club-backup.json',{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[fl]}))navigator.share({files:[fl],title:'Troyee ব্যাকআপ'}).catch(()=>{});else toast('এই ব্রাউজারে ফাইল শেয়ার চলবে না; JSON ব্যাকআপ ডাউনলোড করো')}else if(a==='reset')$('#rd').showModal();else ytAct(a,b)});
@@ -1004,12 +1004,12 @@ addEventListener('scroll',()=>$('#up').classList.toggle('show',scrollY>400),{pas
 PM.left=pmLen('f');pmPaint();
 /* হোম পেজের ইনস্টল কার্ড: অ্যাপ হিসেবে চললে বা সম্প্রতি ইনস্টল/বন্ধ করা হলে দেখায় না */
 const isApp=()=>matchMedia('(display-mode: standalone)').matches||navigator.standalone===true,IK='troyeeInstallHide';
-function installCard(){if(isApp())return'';try{if(Date.now()<(+localStorage.getItem(IK)||0))return''}catch{}
+function installCard(){if(isApp()){try{localStorage.setItem(IK,String(Date.now()+30*864e5))}catch{}return''}try{if(Date.now()<(+localStorage.getItem(IK)||0))return''}catch{}
 const ios=/iphone|ipad|ipod/i.test(navigator.userAgent),tx=ios?'Safari-তে Share চেপে \u201cAdd to Home Screen\u201d বেছে নাও':'হোম স্ক্রিনে অ্যাপের মতো রাখো; ক্লাস তালিকা ও নোট ইন্টারনেট ছাড়াই খোলে';
 return `<div class="pn ins rv"><div class="insi" aria-hidden="true">${ico('dl')}</div><div class="inst"><b>অ্যাপ হিসেবে ইনস্টল করো</b><span class="mu">${tx}</span></div><button class="btn pri" data-act="pwa">${ico('dl')}ইনস্টল করো</button><button class="btn ib" data-act="insx" aria-label="এখন নয়">${ico('x')}</button></div>`}
 function paintInstall(){const b=$('#ibox');if(b&&view==='dashboard'){b.innerHTML=installCard();rv()}}
 function hideInstall(days){try{localStorage.setItem(IK,String(Date.now()+days*864e5))}catch{}paintInstall()}
-let dip=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();dip=e;paintInstall()});addEventListener('appinstalled',()=>{dip=null;toast('অ্যাপ ইনস্টল হয়েছে');hideInstall(180)});
+let dip=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();dip=e;paintInstall()});addEventListener('appinstalled',()=>{dip=null;toast('অ্যাপ ইনস্টল হয়েছে');hideInstall(30)});
 function pwaInstall(){if(matchMedia('(display-mode: standalone)').matches||navigator.standalone){toast('এটি আগে থেকেই অ্যাপ হিসেবে চলছে');return}if(dip){dip.prompt();dip.userChoice.finally(()=>{dip=null})}else toast(/iphone|ipad|ipod/i.test(navigator.userAgent)?'Safari-তে নিচের Share বাটন চেপে "Add to Home Screen" বেছে নাও (Chrome-এ হবে না)':'ব্রাউজারের মেনু থেকে "Install app" বা "Add to Home screen" বেছে নাও (সাইট https-এ হোস্ট থাকতে হবে)')}
 if('serviceWorker'in navigator&&/^https?:$/.test(location.protocol)){const had=!!navigator.serviceWorker.controller;let rl=0;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had&&!rl){rl=1;toast('অ্যাপের নতুন সংস্করণ চালু হয়েছে — পুরো আপডেট পেতে ওপরের Refresh চাপো',6000)}});addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch{}

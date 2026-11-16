@@ -1,5 +1,5 @@
 /* অফলাইনে অ্যাপের কাঠামো (UI) লোড করার জন্য; ভিডিও চালাতে ইন্টারনেট লাগবে */
-const V = 'troyee-v28', SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'favicon.ico', 'favicon-32.png', 'apple-touch-icon.png'];
+const V = 'troyee-v29', SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'favicon.ico', 'favicon-32.png', 'apple-touch-icon.png'];
 const CDN = ['fonts.googleapis.com', 'fonts.gstatic.com', 'cdnjs.cloudflare.com'];
 /* GitHub Pages ফাইল ১০ মিনিট ক্যাশ করে; তাই ইনস্টলে 'reload' ও পেজ খোলায় 'no-cache' দিয়ে সবসময় সর্বশেষ কপি আনা হয় */
 self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => c.addAll(SHELL.map(u => new Request(u, { cache: 'reload' })))).then(() => self.skipWaiting())); });

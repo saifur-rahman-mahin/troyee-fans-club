@@ -1,0 +1,71 @@
+{
+  "id": "./",
+  "name": "Troyee Academy Fans Club",
+  "short_name": "Troyee",
+  "description": "ত্রয়ী ভার্সিটি 'খ' সেকেন্ড টাইম প্রাইভেট ব্যাচ - ২০২৬ স্টাডি স্পেস",
+  "lang": "bn",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f4fa",
+  "theme_color": "#17132b",
+  "categories": [
+    "education"
+  ],
+  "shortcuts": [
+    {
+      "name": "সব ক্লাস",
+      "short_name": "ক্লাস",
+      "url": "./#courses",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "রিভিশন তালিকা",
+      "short_name": "রিভিশন",
+      "url": "./#revision",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "সব নোট",
+      "short_name": "নোট",
+      "url": "./#notes",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
